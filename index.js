@@ -11,11 +11,19 @@ import openingRoute from './routes/opening.route.js';
 import activityDescriptionRoute from './routes/activityDescription.route.js';
 import socialMediaRoute from './routes/socialMedia.route.js';
 import videoDescriptionRoute from './routes/videoDescription.route.js';
-import AboutUsRoute from './routes/aboutUs.route.js';
+import AboutUsMainRoute from './routes/aboutUsMain.route.js';
 import featuresRoute from './routes/features.route.js';
 import galleryHomePageRoute from './routes/galleryHomePage.route.js';
 import generalGalleryRoute from './routes/generalGallery.route.js';
 import AsiRiverRoute from './routes/asiRiver.route.js';
+import RaftingFounderRoute from './routes/raftingFounder.route.js';
+import welcomeRoute from './routes/welcome.route.js';
+import AboutUsValueRoute from './routes/aboutUsValue.route.js';
+import AboutUsMissionRoute from './routes/aboutUsMission.route.js';
+import AboutUsTeamRoute from './routes/aboutUsTeam.route.js';
+import AboutUsDescriptionRoute from './routes/aboutUsDescription.route.js';
+
+
 
 
 
@@ -58,11 +66,20 @@ app.use('/opening',openingRoute)
 app.use('/activityDescription',activityDescriptionRoute)
 app.use('/socialMedia',socialMediaRoute)
 app.use('/videoDescription',videoDescriptionRoute)
-app.use('/aboutUs',AboutUsRoute)
+app.use('/aboutUsMain',AboutUsMainRoute)
 app.use('/features',featuresRoute)
 app.use('/galleryHomePage',galleryHomePageRoute)
 app.use('/generalGallery',generalGalleryRoute)
 app.use('/asiRiver',AsiRiverRoute)
+app.use('/raftingFounder',RaftingFounderRoute)
+app.use('/welcome',welcomeRoute)
+app.use('/aboutUsValue',AboutUsValueRoute)
+app.use('/aboutUsMission',AboutUsMissionRoute)
+app.use('/aboutUsTeam',AboutUsTeamRoute)
+app.use('/aboutUsDescription',AboutUsDescriptionRoute)
+
+
+
 
 
 
