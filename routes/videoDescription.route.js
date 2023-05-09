@@ -6,9 +6,9 @@ const router = express.Router();
 
 
 router.route('/').get(videoDescriptionController.getVideoDescription)
-router.route('/').post(upload.fields([{ name: 'imagePhotographer',maxCount:1 }, { name: 'video',maxCount:1 }]), videoDescriptionController.createVideoDescription)
+router.route('/').post(upload.single('imagePhotographer'), videoDescriptionController.createVideoDescription)
 router.route('/:id').delete(videoDescriptionController.deleteVideoDescription)
-router.route('/:id').put(upload.fields([{ name: 'image' }, { name: 'video' }]), videoDescriptionController.updateVideoDescription)
+router.route('/:id').put(upload.single('imagePhotographer'), videoDescriptionController.updateVideoDescription)
 
 
 

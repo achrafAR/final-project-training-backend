@@ -11,15 +11,15 @@ cloudinary.config({
 
 //create a new HomeUi
 const createHomeUi = async (req, res) => {
-    const { title, description, features } = req.body;
+    const { title, description } = req.body;
+
     try {
-        let image = req.file.path; //get the path of the image
-        const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
+        let image = req.files.map(file => file.path); //get the path of the image
+        const uploadedImages = await Promise.all(image.map(image => cloudinary.uploader.upload(image))); // upload the images to cloudinary
         const newHomeUi = new HomeUi({
-            image: uploadedImage.secure_url,
+            image: uploadedImages.map(image => image.secure_url),
             title,
             description,
-            features,
         });
         const savedHomeUi = await newHomeUi.save();
         res.status(201).json({
@@ -29,7 +29,7 @@ const createHomeUi = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: "Failed to create homeUi",
+            message: "Failed to create HomeUi",
         });
     }
 };
@@ -64,30 +64,35 @@ const deleteHomeUi = async (req, res) => {
 //update HomeUi
 const updateHomeUi = async (req, res) => {
     const { id } = req.params;
-    const { title, description, features } = req.body;
+    const { title, description } = req.body;
     try {
-        let image;
-        if (req.file) {
-            image = await req.file.path;
-            const uploadedImage = await cloudinary.uploader.upload(image);
-            image = uploadedImage.secure_url;
+        const existingHomeUi = await HomeUi.findById(id);
+
+        let newImages = existingHomeUi.image.slice(); // Make a copy of the existing image array
+
+        if (req.files && req.files.length > 0) {
+            const uploadedImages = await Promise.all(
+                req.files.map((file) => cloudinary.uploader.upload(file.path))
+            );
+            uploadedImages.forEach((image, index) => {
+                newImages[index] = image.secure_url; // Replace the URL of the updated image
+            });
         }
-        const editHomeUi = {
-            image,
-            title,
-            description,
-            features,
-        };
-        const updatedHomeUi = await HomeUi.findByIdAndUpdate(id, editHomeUi);
+
+        const updatedHomeUi = await HomeUi.findByIdAndUpdate(
+            id,
+            { title, description, image: newImages },
+            { new: true }
+        );
         res.json({
             message: "HomeUi updated successfully",
             status: 200,
-            data: editHomeUi,
+            data: updatedHomeUi,
         });
     } catch (error) {
         console.log(error);
         res.json({
-            message: "HomeUi updated failed",
+            message: "HomeUi update failed",
             status: 203,
         });
     }

@@ -11,14 +11,15 @@ cloudinary.config({
 
 //create a new VideoDescription
 const createVideoDescription = async (req, res) => {
-    const { title, description,namePhotographer, descriptionPhotographer } = req.body;
+    console.log(req.body)
+    const { title, description, namePhotographer, descriptionPhotographer, videoLink } = req.body;
     try {
-        const uploadedFiles = await upload(req);
-        const uploadedImage = await cloudinary.uploader.upload(uploadedFiles.image[0].path); // upload the image to cloudinary
-        const uploadedVideo = await cloudinary.uploader.upload(uploadedFiles.video[0].path); // upload the video to cloudinary
+        let image = req.file.path; //get the path of the image
+
+        const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
         const newVideoDescription = new VideoDescription({
             imagePhotographer: uploadedImage.secure_url,
-            video: uploadedVideo.secure_url,
+            videoLink,
             title,
             description,
             namePhotographer,
@@ -68,26 +69,29 @@ const deleteVideoDescription = async (req, res) => {
 //update VideoDescription
 const updateVideoDescription = async (req, res) => {
     const { id } = req.params;
-    const { title, description, namePhotographer, descriptionPhotographer } = req.body;
+    const { title, description, namePhotographer, descriptionPhotographer, videoLink } = req.body;
     try {
-        let imagePhotographer;
-        let video;
+        // Retrieve the existing video description
+        const existingVideoDescription = await VideoDescription.findById(id);
+
+        // Upload the new image, if it's included in the request body
+        let imagePhotographer = existingVideoDescription.imagePhotographer;
         if (req.file) {
-            imagePhotographer = await req.file.path;
-            video = await req.file.path;
-            const uploadedImage = await cloudinary.uploader.upload(image);
-            const uploadedVideo = await cloudinary.uploader.upload(video);
+            const uploadedImage = await cloudinary.uploader.upload(req.file.path);
             imagePhotographer = uploadedImage.secure_url;
-            video = uploadedVideo.secure_url;
         }
+
+        // Update the fields, using the new value if present, and the existing value otherwise
         const editVideoDescription = {
             imagePhotographer,
-            video,
-            title,
-            description,
-            namePhotographer,
-            descriptionPhotographer,
+            title: title || existingVideoDescription.title,
+            description: description || existingVideoDescription.description,
+            namePhotographer: namePhotographer || existingVideoDescription.namePhotographer,
+            descriptionPhotographer: descriptionPhotographer || existingVideoDescription.descriptionPhotographer,
+            videoLink: videoLink || existingVideoDescription.videoLink,
         };
+
+        // Save the updated video description and return the result
         const updatedVideoDescription = await VideoDescription.findByIdAndUpdate(id, editVideoDescription);
         res.json({
             message: "VideoDescription updated successfully",

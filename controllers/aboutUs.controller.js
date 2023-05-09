@@ -3,28 +3,33 @@
 import AboutUs from '../models/aboutUs.model.js';
 import { v2 as cloudinary } from "cloudinary";
 
+cloudinary.config({
+    cloud_name: "didb7l6nz",
+    api_key: "721724432988673",
+    api_secret: "xhRyWzzuWWbgblhPRZ8cVk_Ss7Q",
+});
+
 
 // Create operation
 const createAboutUs = async (req, res) => {
+    console.log(req.body)
+    console.log(req.files)
+
     try {
-        const { background, title, description, values, team } = req.body;
+        const { title, description, values, team } = req.body;
 
         const aboutUs = new AboutUs({
-            background:req.files.background[0].path,
+            background: await cloudinary.uploader.upload(req.files.background[0].path),
             title,
             description,
-            values: values.map((value, index) => ({
+            values: values.map(async (value) => ({
                 ...value,
-                title: value.titles[index],
-                description: value.descriptions[index],
-                imageValue: req.files[value.imageValue][0].path // assuming you're using Multer or similar middleware to handle file uploads
+                imageValue: await cloudinary.uploader.upload(req.files.value[0][imageValue].path),
             })),
-            team: team.map((member, index) => ({
+            team: team.map(async (member) => ({
                 ...member,
-                title: member.titles[index],
-                description: member.descriptions[index],
-                imageTeam: req.files[member.imageTeam][0].path
-            }))
+                imageTeam: await cloudinary.uploader.upload(req.files.team[0][imageTeam].path),
+            })),
         });
 
         await aboutUs.save();

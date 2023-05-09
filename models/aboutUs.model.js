@@ -17,7 +17,7 @@ const aboutUsSchema = mongoose.Schema({
         [
             {
                 imageValue: {
-                    type: Number,
+                    type: String,
                     required: true,
                 },
                 title: {
@@ -30,11 +30,11 @@ const aboutUsSchema = mongoose.Schema({
                 },
             },
         ],
-        team: 
+    team: 
         [
             {
                 imageTeam: {
-                    type: Number,
+                    type: String,
                     required: true,
                 },
                 title: {

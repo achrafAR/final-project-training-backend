@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
 const homeUiSchema = mongoose.Schema({
-    image: {
+    image: [
+        {
         type: String,
         required: true,
-    },
+    }
+],
     title: {
         type: String,
         required: true,
@@ -13,23 +15,6 @@ const homeUiSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    features: 
-        [
-            {
-                number: {
-                    type: Number,
-                    required: true,
-                },
-                title: {
-                    type: String,
-                    required: true,
-                },
-                description: {
-                    type: String,
-                    required: true,
-                },
-            },
-        ],
     
 });
 
