@@ -24,6 +24,10 @@ import AboutUsTeamRoute from './routes/aboutUsTeam.route.js';
 import AboutUsDescriptionRoute from './routes/aboutUsDescription.route.js';
 import ContactUsMainRoute from './routes/contactUsMain.route.js';
 import ContactUsDetailsRoute from './routes/contactUsDetails.route.js'
+import OffersMainRoute from './routes/offersMain.route.js'
+import OffersRoute from './routes/offers.route.js'
+
+
 
 
 
@@ -81,6 +85,10 @@ app.use('/aboutUsTeam',AboutUsTeamRoute)
 app.use('/aboutUsDescription',AboutUsDescriptionRoute)
 app.use('/contactUsMain',ContactUsMainRoute)
 app.use('/contactUsDetails',ContactUsDetailsRoute)
+app.use('/offersMain',OffersMainRoute)
+app.use('/offers',OffersRoute)
+
+
 
 
 
