@@ -22,6 +22,8 @@ import AboutUsValueRoute from './routes/aboutUsValue.route.js';
 import AboutUsMissionRoute from './routes/aboutUsMission.route.js';
 import AboutUsTeamRoute from './routes/aboutUsTeam.route.js';
 import AboutUsDescriptionRoute from './routes/aboutUsDescription.route.js';
+import ContactUsMainRoute from './routes/contactUsMain.route.js';
+import ContactUsDetailsRoute from './routes/contactUsDetails.route.js'
 
 
 
@@ -77,6 +79,9 @@ app.use('/aboutUsValue',AboutUsValueRoute)
 app.use('/aboutUsMission',AboutUsMissionRoute)
 app.use('/aboutUsTeam',AboutUsTeamRoute)
 app.use('/aboutUsDescription',AboutUsDescriptionRoute)
+app.use('/contactUsMain',ContactUsMainRoute)
+app.use('/contactUsDetails',ContactUsDetailsRoute)
+
 
 
 
