@@ -26,6 +26,10 @@ import ContactUsMainRoute from './routes/contactUsMain.route.js';
 import ContactUsDetailsRoute from './routes/contactUsDetails.route.js'
 import OffersMainRoute from './routes/offersMain.route.js'
 import OffersRoute from './routes/offers.route.js'
+import ReviewRoute from './routes/review.route.js';
+import userRoute from './routes/user.route.js';
+import amenitiesRoute from './routes/amenities.route.js';
+
 
 
 
@@ -87,6 +91,10 @@ app.use('/contactUsMain',ContactUsMainRoute)
 app.use('/contactUsDetails',ContactUsDetailsRoute)
 app.use('/offersMain',OffersMainRoute)
 app.use('/offers',OffersRoute)
+app.use('/review',ReviewRoute)
+app.use('/user', userRoute);
+app.use('/amenities',amenitiesRoute)
+
 
 
 

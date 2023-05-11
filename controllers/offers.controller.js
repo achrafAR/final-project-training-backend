@@ -1,8 +1,6 @@
 import Offers from "../models/offers.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
-
 cloudinary.config({
     cloud_name: "didb7l6nz",
     api_key: "721724432988673",
@@ -13,10 +11,12 @@ cloudinary.config({
 const createOffers = async (req, res) => {
     const { title, description, price, capacity, quantity, reserve } = req.body;
     try {
-        let image = req.file.path; //get the path of the image
-        const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
+        let image = req.files.map((file) => file.path); //get the path of the image
+        const uploadedImages = await Promise.all(
+            image.map((image) => cloudinary.uploader.upload(image))
+        ); // upload the images to cloudinary
         const newOffers = new Offers({
-            image: uploadedImage.secure_url,
+            image: uploadedImages.map((image) => image.secure_url),
             title,
             description,
             price,
@@ -69,14 +69,21 @@ const updateOffers = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, capacity, quantity, reserve } = req.body;
     try {
-        let image;
-        if (req.file) {
-            image = await req.file.path;
-            const uploadedImage = await cloudinary.uploader.upload(image);
-            image = uploadedImage.secure_url;
+        const existingOffer = await Offers.findById(id);
+
+        let newImages = existingOffer.image.slice(); // Make a copy of the existing image array
+
+        if (req.files && req.files.length > 0) {
+            const uploadedImages = await Promise.all(
+                req.files.map((file) => cloudinary.uploader.upload(file.path))
+            );
+            uploadedImages.forEach((image, index) => {
+                newImages[index] = image.secure_url; // Replace the URL of the updated image
+            });
         }
+
         const editOffers = {
-            image,
+            image: newImages,
             title,
             description,
             price,
@@ -99,10 +106,9 @@ const updateOffers = async (req, res) => {
     }
 };
 
-
 export default {
     createOffers,
     getOffers,
     deleteOffers,
-    updateOffers
+    updateOffers,
 };

@@ -1,10 +1,11 @@
 import mongoose, { trusted } from "mongoose";
 
 const offersSchema = mongoose.Schema({
-    image: {
+    image:[{
         type: String,
         required: true,
-    },
+    }]
+    ,
     title: {
         type: String,
         required: true,
@@ -28,11 +29,19 @@ const offersSchema = mongoose.Schema({
     reserve: {
         type: Boolean,
         required:true
+    },
+    ratingId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Rating",
     }
+    
+    
 
 
 
-});
+},
+{ timestamps:true}
+);
 
 const Offers = mongoose.model("Offers", offersSchema);
 export default Offers;
