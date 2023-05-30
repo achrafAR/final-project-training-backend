@@ -11,14 +11,13 @@ cloudinary.config({
 
 //create a new Popular
 const createGalleryHomePage = async (req, res) => {
-    const { title, description } = req.body;
+    const { title } = req.body;
     try {
         let image = req.file.path; //get the path of the image
         const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
         const newGalleryHomePage = new GalleryHomePage({
             image: uploadedImage.secure_url,
             title,
-            description,
         });
         const savedGalleryHomePage = await newGalleryHomePage.save();
         res.status(201).json({
@@ -63,7 +62,7 @@ const deleteGalleryHomePage = async (req, res) => {
 //update GalleryHomePage
 const updateGalleryHomePage = async (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, } = req.body;
     try {
         let image;
         if (req.file) {
@@ -74,7 +73,6 @@ const updateGalleryHomePage = async (req, res) => {
         const editGalleryHomePage = {
             image,
             title,
-            description,
         };
         const updatedGalleryHomePage = await GalleryHomePage.findByIdAndUpdate(id, editGalleryHomePage);
         res.json({

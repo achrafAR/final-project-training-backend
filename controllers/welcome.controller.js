@@ -1,13 +1,24 @@
 import Welcome from "../models/welcome.model.js";
+import { v2 as cloudinary } from "cloudinary";
 
+
+
+cloudinary.config({
+    cloud_name: "didb7l6nz",
+    api_key: "721724432988673",
+    api_secret: "xhRyWzzuWWbgblhPRZ8cVk_Ss7Q",
+});
 
 //create a new Welcome
 const createWelcome = async (req, res) => {
     const { title, description } = req.body;
     try {
+        let image = req.file.path; //get the path of the image
+        const uploadedImage = await cloudinary.uploader.upload(image);
         const newWelcome = new Welcome({
             title,
             description,
+            image: uploadedImage.secure_url,
         });
         const savedWelcome = await newWelcome.save();
         res.status(201).json({
@@ -53,10 +64,17 @@ const deleteWelcome = async (req, res) => {
 const updateWelcome = async (req, res) => {
     const { id } = req.params;
     try {
+        let image;
+        if (req.file) {
+            image = await req.file.path;
+            const uploadedImage = await cloudinary.uploader.upload(image);
+            image = uploadedImage.secure_url;
+        }
         const { title, description } = req.body;
         const editWelcome = {
             title,
             description,
+            image,
         };
         const updatedWelcome = await Welcome.findByIdAndUpdate(id, editWelcome);
         res.json({

@@ -1,10 +1,10 @@
 import mongoose, { trusted } from "mongoose";
 
 const offersSchema = mongoose.Schema({
-    image:[{
+    image: {
         type: String,
         required: true,
-    }]
+    }
     ,
     title: {
         type: String,
@@ -18,30 +18,30 @@ const offersSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    is_reserved: {
+        type: Boolean,
+        required: true
+    },
     capacity: {
         type: Number,
-        required:true
+        required: true
     },
-    quantity: {
+    rating: {
         type: Number,
-        required:true
+        required: true
     },
-    reserve: {
-        type: Boolean,
-        required:true
+    totalClick:{
+        type: Number,
+        required: true
     },
-    ratingId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Rating",
+    totalRating:{
+        type: Number,
+        required: true
     }
-    
-    
-
-
-
 },
-{ timestamps:true}
+    { timestamps: true }
 );
+
 
 const Offers = mongoose.model("Offers", offersSchema);
 export default Offers;

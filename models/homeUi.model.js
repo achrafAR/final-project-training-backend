@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const homeUiSchema = mongoose.Schema({
-    image: [
+    image: 
         {
         type: String,
         required: true,
     }
-],
+,
     title: {
         type: String,
         required: true,

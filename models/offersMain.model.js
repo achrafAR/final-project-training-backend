@@ -13,6 +13,10 @@ const offersMainSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    backgroundName: {
+        type:String,
+        required:true,
+    }
 
 
 });

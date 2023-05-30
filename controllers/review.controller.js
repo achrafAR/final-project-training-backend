@@ -3,9 +3,9 @@ import Review from "../models/review.model.js";
 // POST reviews
 export const createReview = async (req, res) => {
     try {
-        const { name, description, userId, } = req.body;
+        const { name, description, userId } = req.body;
 
-        const newReview = new Review({ name, description, userId, });
+        const newReview = new Review({ name, description, userId });
         const createdReview = await newReview.save();
 
         res.status(201).json(createdReview);
@@ -15,10 +15,10 @@ export const createReview = async (req, res) => {
     }
 };
 
-// GET reviews
+// GET All Reviews
 export const getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.find().populate("userId");
+        const reviews = await Review.find();
         res.status(200).json(reviews);
     } catch (error) {
         console.error(error);

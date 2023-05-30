@@ -24,11 +24,12 @@ import AboutUsTeamRoute from './routes/aboutUsTeam.route.js';
 import AboutUsDescriptionRoute from './routes/aboutUsDescription.route.js';
 import ContactUsMainRoute from './routes/contactUsMain.route.js';
 import ContactUsDetailsRoute from './routes/contactUsDetails.route.js'
-import OffersMainRoute from './routes/offersMain.route.js'
 import OffersRoute from './routes/offers.route.js'
 import ReviewRoute from './routes/review.route.js';
 import userRoute from './routes/user.route.js';
 import amenitiesRoute from './routes/amenities.route.js';
+import offersMainRoute from './routes/offersMain.route.js'
+import myBookingRoute from './routes/myBooking.route.js'
 
 
 
@@ -89,12 +90,12 @@ app.use('/aboutUsTeam',AboutUsTeamRoute)
 app.use('/aboutUsDescription',AboutUsDescriptionRoute)
 app.use('/contactUsMain',ContactUsMainRoute)
 app.use('/contactUsDetails',ContactUsDetailsRoute)
-app.use('/offersMain',OffersMainRoute)
 app.use('/offers',OffersRoute)
 app.use('/review',ReviewRoute)
 app.use('/user', userRoute);
 app.use('/amenities',amenitiesRoute)
-
+app.use('/offersMain',offersMainRoute)
+app.use('/myBooking',myBookingRoute)
 
 
 

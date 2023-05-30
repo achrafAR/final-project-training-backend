@@ -1,13 +1,23 @@
 import RaftingFounder from "../models/raftingFounder.model.js";
+import { v2 as cloudinary } from "cloudinary";
 
+cloudinary.config({
+  cloud_name: "didb7l6nz",
+  api_key: "721724432988673",
+  api_secret: "xhRyWzzuWWbgblhPRZ8cVk_Ss7Q",
+});
 
 //create a new RaftingFounder
 const createRaftingFounder = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, location } = req.body;
     try {
+        let image = req.file.path; //get the path of the image
+        const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
         const newRaftingFounder = new RaftingFounder({
+            image: uploadedImage.secure_url,
             title,
             description,
+            location,
         });
         const savedRaftingFounder = await newRaftingFounder.save();
         res.status(201).json({

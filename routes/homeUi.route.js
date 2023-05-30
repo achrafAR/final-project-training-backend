@@ -6,9 +6,9 @@ const router = express.Router();
 
 
 router.route('/').get(homeUiController.getHomeUi)
-router.route('/').post(upload.array('image',4), homeUiController.createHomeUi);
+router.route('/').post(upload.single('image'), homeUiController.createHomeUi);
 router.route('/:id').delete(homeUiController.deleteHomeUi)
-router.route('/:id').put(upload.array('image',4),homeUiController.updateHomeUi)
+router.route('/:id').put(upload.single('image'),homeUiController.updateHomeUi)
 
 
 

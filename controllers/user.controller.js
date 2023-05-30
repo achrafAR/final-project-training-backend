@@ -7,9 +7,9 @@ import user from "../models/user.model.js";
 
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, role } = req.body
+    const { userName, email, password, role } = req.body
 
-    if (!name || !email || !password) {
+    if (!userName || !email || !password) {
         res.status(400)
         throw new Error('Please add all fields')
     }
@@ -25,7 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     const newUser = await user.create({
-        name,
+        userName,
         email,
         role: role || 'user',
         password: hashedPassword
@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (newUser) {
         res.status(201).json({
             _id: newUser.id,
-            name: newUser.name,
+            userName: newUser.userName,
             email: newUser.email,
             role: newUser.role,
             token: generateToken(user._id)
@@ -66,7 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if (loginUser && (await bcrypt.compare(password, loginUser.password))) {
         res.json({
             _id: loginUser.id,
-            name: loginUser.name,
+            userName: loginUser.userName,
             email: loginUser.email,
             role: loginUser.role,
             token: generateToken(user._id)
@@ -127,7 +127,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 const editUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { name, email, password, role } = req.body;
+    const { userName, email, password, role } = req.body;
 
     const userToUpdate = await user.findById(id);
 
@@ -136,7 +136,7 @@ const editUser = asyncHandler(async (req, res) => {
         throw new Error("User not found");
     }
 
-    userToUpdate.name = name || userToUpdate.name;
+    userToUpdate.userName = userName || userToUpdate.userName;
     userToUpdate.email = email || userToUpdate.email;
     // userToUpdate.role = role || userToUpdate.role;
 
@@ -152,7 +152,7 @@ const editUser = asyncHandler(async (req, res) => {
         status: 200,
         data: {
             _id: updatedUser.id,
-            name: updatedUser.name,
+            userName: updatedUser.userName,
             email: updatedUser.email,
             role: 'user',
         },

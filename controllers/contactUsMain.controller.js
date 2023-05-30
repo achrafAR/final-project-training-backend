@@ -11,7 +11,7 @@ cloudinary.config({
 
 //create a new ContactUsMain
 const createContactUsMain = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, backgroundName } = req.body;
     try {
         let image = req.file.path; //get the path of the image
         const uploadedImage = await cloudinary.uploader.upload(image); // upload the image to cloudinary
@@ -19,6 +19,7 @@ const createContactUsMain = async (req, res) => {
             image: uploadedImage.secure_url,
             title,
             description,
+            backgroundName,
         });
         const savedContactUsMain = await newContactUsMain.save();
         res.status(201).json({
@@ -63,7 +64,7 @@ const deleteContactUsMain = async (req, res) => {
 //update ContactUsMain
 const updateContactUsMain = async (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, description, backgroundName } = req.body;
     try {
         let image;
         if (req.file) {
@@ -75,6 +76,7 @@ const updateContactUsMain = async (req, res) => {
             image,
             title,
             description,
+            backgroundName,
         };
         const updatedContactUsMain = await ContactUsMain.findByIdAndUpdate(id, editContactUsMain);
         res.json({
