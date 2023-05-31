@@ -30,6 +30,7 @@ import userRoute from './routes/user.route.js';
 import amenitiesRoute from './routes/amenities.route.js';
 import offersMainRoute from './routes/offersMain.route.js'
 import myBookingRoute from './routes/myBooking.route.js'
+import ordersRoute from './routes/orders.route.js'
 
 
 
@@ -96,6 +97,7 @@ app.use('/user', userRoute);
 app.use('/amenities',amenitiesRoute)
 app.use('/offersMain',offersMainRoute)
 app.use('/myBooking',myBookingRoute)
+app.use('/orders',ordersRoute)
 
 
 

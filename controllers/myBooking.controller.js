@@ -108,8 +108,6 @@ const deleteMyBooking = async (req, res) => {
 
 const getBookingsByUserId = async (req, res) => {
     const userId  = req.params.userId;
-    console.log(req.params)
-    console.log(userId)
     try {
         const bookings = await MyBooking.find({ userId:userId });
 
@@ -124,9 +122,26 @@ const getBookingsByUserId = async (req, res) => {
     }
 };
 
+const deleteBookingByUserId = async (req, res) => {
+    console.log(req.params)
+    const userId  = req.params.userId;
+    console.log(userId)
+    try{
+        await MyBooking.deleteOne({userId:userId})
+        res.status(200).json({ message: "Cart successfully deleted" });
+
+    }catch (error){
+        console.error("Error deleting booking:", error);
+        res.status(500).json({ error: "An error occurred while deleting booking" });
+
+    }
+    
+}
+
 export default {
     getBookings,
     createOrUpdateMyBooking,
     deleteMyBooking,
     getBookingsByUserId,
+    deleteBookingByUserId,
 };
