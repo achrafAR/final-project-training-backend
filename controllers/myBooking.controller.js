@@ -36,7 +36,7 @@ const createOrUpdateMyBooking = async (req, res) => {
                 total_price: total_price,
             };
             // Push the new offer to the 'offers' array
-        
+
             const offersArray = existingBooking.offers;
             offersArray.push(newOffer);
             existingBooking.offers = offersArray;
@@ -47,7 +47,7 @@ const createOrUpdateMyBooking = async (req, res) => {
             //     finalPrice = finalPrice + existingBooking.offers[i].total_price
             // }
             console.log(existingBooking.finalPrice)
-            let price = existingBooking.finalPrice+total_price;
+            let price = existingBooking.finalPrice + total_price;
             existingBooking.finalPrice = price;
 
             await existingBooking.save();
@@ -106,8 +106,27 @@ const deleteMyBooking = async (req, res) => {
     }
 };
 
+const getBookingsByUserId = async (req, res) => {
+    const userId  = req.params.userId;
+    console.log(req.params)
+    console.log(userId)
+    try {
+        const bookings = await MyBooking.find({ userId:userId });
+
+        if (!bookings) {
+            return res.status(404).json({ message: "No bookings found for the user" });
+        }
+
+        return res.status(200).json(bookings);
+    } catch (error) {
+        console.error("Error retrieving bookings:", error);
+        res.status(500).json({ error: "An error occurred while retrieving bookings" });
+    }
+};
+
 export default {
     getBookings,
     createOrUpdateMyBooking,
-    deleteMyBooking
+    deleteMyBooking,
+    getBookingsByUserId,
 };
