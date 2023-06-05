@@ -136,27 +136,39 @@ const deleteBookingByUserId = async (req, res) => {
     }
 };
 
-const deleteOfferFromBooking = async (req, res) => {
-    const { offerId } = req.params;
+// Controller function to remove an offer from the booking
+const removeOfferFromBooking = async (req, res) => {
+    const { userId, offerId } = req.params;
 
     try {
-        const booking = await MyBooking.findOne({ "offers.offerId": offerId });
+        const booking = await MyBooking.findOne({ userId });
 
-        booking.offers = booking.offers.filter(
-            (offer) => offer.offerId !== offerId
-        );
+        if (!booking) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        const offerIndex = booking.offers.findIndex((offer) => offer.offerId === offerId);
+
+        if (offerIndex === -1) {
+            return res.status(404).json({ error: 'Offer not found in the booking' });
+        }
+
+        booking.offers.splice(offerIndex, 1);
+
+        // // Update the final price
+        // let finalPrice = 0;
+        // for (let i = 0; i < booking.offers.length; i++) {
+        //     finalPrice += booking.offers[i].total_price;
+        // }
+        // booking.finalPrice = finalPrice;
 
         await booking.save();
 
-        console.log("Offer removed from booking:", booking);
+        console.log('Offer removed from booking:', booking);
         res.status(200).json(booking);
     } catch (error) {
-        console.error("Error removing offer from booking:", error);
-        res
-            .status(500)
-            .json({
-                error: "An error occurred while removing the offer from the booking",
-            });
+        console.error('Error removing offer from booking:', error);
+        res.status(500).json({ error: 'An error occurred while removing the offer from the booking' });
     }
 };
 
