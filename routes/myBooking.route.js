@@ -9,6 +9,7 @@ router.route('/').post(myBookingController.createOrUpdateMyBooking);
 router.route('/:id').delete(myBookingController.deleteMyBooking)
 router.route('/:userId').get(myBookingController.getBookingsByUserId)
 router.route('/user/:userId').delete(myBookingController.deleteBookingByUserId)
+router.route('/:offerId').delete(myBookingController.deleteOfferFromBooking)
 
 
 

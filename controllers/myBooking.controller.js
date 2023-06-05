@@ -46,13 +46,12 @@ const createOrUpdateMyBooking = async (req, res) => {
             //     var finalPrice = 0;
             //     finalPrice = finalPrice + existingBooking.offers[i].total_price
             // }
-            console.log(existingBooking.finalPrice)
+            console.log(existingBooking.finalPrice);
             let price = existingBooking.finalPrice + total_price;
             existingBooking.finalPrice = price;
 
             await existingBooking.save();
-            console.log(existingBooking)
-
+            console.log(existingBooking);
 
             console.log("New offer pushed to the existing cart:", existingBooking);
             res.status(200).json(existingBooking);
@@ -88,8 +87,6 @@ const createOrUpdateMyBooking = async (req, res) => {
     }
 };
 
-
-
 const deleteMyBooking = async (req, res) => {
     const { id } = req.params;
     try {
@@ -107,36 +104,61 @@ const deleteMyBooking = async (req, res) => {
 };
 
 const getBookingsByUserId = async (req, res) => {
-    const userId  = req.params.userId;
+    const userId = req.params.userId;
     try {
-        const bookings = await MyBooking.find({ userId:userId });
+        const bookings = await MyBooking.find({ userId: userId });
 
         if (!bookings) {
-            return res.status(404).json({ message: "No bookings found for the user" });
+            return res
+                .status(404)
+                .json({ message: "No bookings found for the user" });
         }
 
         return res.status(200).json(bookings);
     } catch (error) {
         console.error("Error retrieving bookings:", error);
-        res.status(500).json({ error: "An error occurred while retrieving bookings" });
+        res
+            .status(500)
+            .json({ error: "An error occurred while retrieving bookings" });
     }
 };
 
 const deleteBookingByUserId = async (req, res) => {
-    console.log(req.params)
-    const userId  = req.params.userId;
-    console.log(userId)
-    try{
-        await MyBooking.deleteOne({userId:userId})
+    console.log(req.params);
+    const userId = req.params.userId;
+    console.log(userId);
+    try {
+        await MyBooking.deleteOne({ userId: userId });
         res.status(200).json({ message: "Cart successfully deleted" });
-
-    }catch (error){
+    } catch (error) {
         console.error("Error deleting booking:", error);
         res.status(500).json({ error: "An error occurred while deleting booking" });
-
     }
-    
-}
+};
+
+const deleteOfferFromBooking = async (req, res) => {
+    const { offerId } = req.params;
+
+    try {
+        const booking = await MyBooking.findOne({ "offers.offerId": offerId });
+
+        booking.offers = booking.offers.filter(
+            (offer) => offer.offerId !== offerId
+        );
+
+        await booking.save();
+
+        console.log("Offer removed from booking:", booking);
+        res.status(200).json(booking);
+    } catch (error) {
+        console.error("Error removing offer from booking:", error);
+        res
+            .status(500)
+            .json({
+                error: "An error occurred while removing the offer from the booking",
+            });
+    }
+};
 
 export default {
     getBookings,
@@ -144,4 +166,5 @@ export default {
     deleteMyBooking,
     getBookingsByUserId,
     deleteBookingByUserId,
+    deleteOfferFromBooking,
 };
