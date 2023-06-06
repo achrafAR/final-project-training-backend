@@ -136,26 +136,23 @@ const deleteBookingByUserId = async (req, res) => {
 
 // Controller function to remove an offer from the booking
 const deleteOfferFromBooking = async (req, res) => {
-    console.log(req.params)
+    console.log(req.params);
     const { userId, offerId } = req.params;
 
     try {
         const booking = await MyBooking.findOne({ userId });
-
         if (!booking) {
             return res.status(404).json({ error: 'Booking not found' });
         }
 
+        const offerIndex = booking.offers.findIndex(offer => offer.offerId == offerId);
+        console.log(offerIndex)
+        if (offerIndex === -1) {
+            return res.status(404).json({ error: 'Offer not found in booking' });
+        }
 
-        booking.offers = booking.offers.filter((offer) => offer.offerId !== offerId);
-
-
-        // // Update the final price
-        // let finalPrice = 0;
-        // for (let i = 0; i < booking.offers.length; i++) {
-        //     finalPrice += booking.offers[i].total_price;
-        // }
-        // booking.finalPrice = finalPrice;
+        booking.offers.splice(offerIndex, 1);
+        console.log(booking.offers);
 
         await booking.save();
 
