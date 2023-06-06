@@ -46,12 +46,10 @@ const createOrUpdateMyBooking = async (req, res) => {
             //     var finalPrice = 0;
             //     finalPrice = finalPrice + existingBooking.offers[i].total_price
             // }
-            console.log(existingBooking.finalPrice);
             let price = existingBooking.finalPrice + total_price;
             existingBooking.finalPrice = price;
 
             await existingBooking.save();
-            console.log(existingBooking);
 
             console.log("New offer pushed to the existing cart:", existingBooking);
             res.status(200).json(existingBooking);
@@ -138,6 +136,7 @@ const deleteBookingByUserId = async (req, res) => {
 
 // Controller function to remove an offer from the booking
 const deleteOfferFromBooking = async (req, res) => {
+    console.log(req.params)
     const { userId, offerId } = req.params;
 
     try {
