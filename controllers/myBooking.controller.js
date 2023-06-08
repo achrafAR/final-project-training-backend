@@ -144,7 +144,6 @@ const deleteOfferFromBooking = async (req, res) => {
         if (!booking) {
             return res.status(404).json({ error: 'Booking not found' });
         }
-        const removedOffer = booking.offers.find(offer => offer.offerId === offerId);
 
 
         const offerIndex = booking.offers.findIndex(offer => offer.offerId == offerId);
@@ -153,9 +152,8 @@ const deleteOfferFromBooking = async (req, res) => {
             return res.status(404).json({ error: 'Offer not found in booking' });
         }
 
-        booking.offers.splice(offerIndex, 1);
-        
-        booking.finalPrice = booking.finalPrice - removedOffer.total_price
+        const removedOffer = booking.offers.splice(offerIndex, 1)[0];
+        booking.finalPrice -= removedOffer.total_price;        
         
 
         await booking.save();
