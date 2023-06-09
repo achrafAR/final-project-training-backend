@@ -141,11 +141,12 @@ const deleteOfferFromBooking = async (req, res) => {
 
     try {
         const booking = await MyBooking.findOne({ userId });
+        console.log(booking)
         if (!booking) {
             return res.status(404).json({ error: 'Booking not found' });
         }
-        const removedOffer = booking.offers.find(offer => offer.offerId === offerId);
-
+        const removedOffer = booking.offers.find(offer => offer.offerId == offerId);
+        console.log(removedOffer)
 
         const offerIndex = booking.offers.findIndex(offer => offer.offerId == offerId);
         console.log(offerIndex)
